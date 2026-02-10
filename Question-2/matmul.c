@@ -3,7 +3,7 @@
 
 // while compiling use -D DIM=5 to change the dimensions to 5
 #ifndef DIM
-#define DIM 3
+#define DIM 5
 #endif
 
 /// @brief Reads the matrix from a space separated text file.
@@ -11,6 +11,16 @@
 /// @param A 2D array of dimension DIMxDIM defined by the DIM macro.
 void read_mat(char *filename, float A[DIM][DIM])
 {
+    FILE *fptr;
+    // char line[64];
+    fptr = fopen(filename, "r");
+    // if (fgets(line, sizeof(line), fptr)) {
+        for(int i=0; i<DIM; i++) {
+            for(int j=0; j<DIM; j++) {
+                fscanf(fptr, "%f", &A[i][j]);
+            }
+        }
+    // }
 }
 
 /**
@@ -24,6 +34,12 @@ void read_mat(char *filename, float A[DIM][DIM])
  */
 void print_mat(float A[DIM][DIM])
 {
+    for(int i=0; i<DIM; i++) {
+            for(int j=0; j<DIM; j++) {
+                    printf("%f ", A[i][j]);
+            }
+            printf("\n");
+        }
 }
 
 /// @brief Performs the matrix multiplication on Matrix A and B and saves the results to Matrix C
@@ -32,6 +48,18 @@ void print_mat(float A[DIM][DIM])
 /// @param C Output Matrix C
 void matmul(float A[DIM][DIM], float B[DIM][DIM], float C[DIM][DIM])
 {
+    int i,j, k;
+    // float sum;
+    for(k=0; k<DIM; k++) {
+    // sum = 0;
+        for(i=0; i<DIM; i++) {
+            // sum = 0;
+            C[k][i]=0;
+            for(j=0; j<DIM; j++) {
+                C[k][i] += A[k][j] * B[j][i];
+            }
+        }
+    }
 }
 
 double gettime()
@@ -64,12 +92,12 @@ int main()
     // Task 2: Perform Matrix multiplication
     // Uncomment the below part after doing task 1.
 
-    // double t1 = gettime();
-    // // Declare a matrix C and use it for multiplication
-    // matmul(A, B, C);
-    // double t2 = gettime();
-    // printf("Matrix C: \n");
-    // print_mat(C);
+    double t1 = gettime();
+    // Declare a matrix C and use it for multiplication
+    matmul(A, B, C);
+    double t2 = gettime();
+    printf("Matrix C: \n");
+    print_mat(C);
 
-    // printf("Time taken: %8.4g milliseconds\n", (t2-t1)*1000);
+    printf("Time taken: %8.4g milliseconds\n", (t2-t1)*1000);
 }
